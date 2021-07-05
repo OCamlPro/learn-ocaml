@@ -200,15 +200,18 @@ let execute_phrase top ?timeout content =
 let execute top =
   Learnocaml_toplevel_input.execute top.input
 
+let execute_test top =
+  Learnocaml_toplevel_output.get_blocks top.output
+
 let go_backward top =
   Learnocaml_toplevel_input.go_backward top.input
 
 let go_forward top =
   Learnocaml_toplevel_input.go_forward top.input
 
-let check top code =
+let check ?grading top code =
   protect_execution top @@ fun () ->
-  Learnocaml_toplevel_worker_caller.check top.worker code
+  Learnocaml_toplevel_worker_caller.check ?grading top.worker code
 
 let set_checking_environment top =
   protect_execution top @@ fun () ->

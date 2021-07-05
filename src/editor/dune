@@ -1,0 +1,133 @@
+(library
+ (name jszip)
+ (wrapped false)
+ (flags :standard -w -9 -warn-error -27)
+ (modules_without_implementation Jszip)
+ (modules Jszip)
+ (libraries jsutils
+ 	    js_of_ocaml
+	    js_of_ocaml-lwt
+	    lwt)
+ (preprocess (pps js_of_ocaml.ppx))
+ )
+
+(library
+ (name editor_lib)
+ (wrapped false)
+ (modes byte)
+ (flags :standard -warn-error -4-42-44-45-48-33-27-32-34)
+ (libraries
+     ace
+    learnocaml_repository 
+    ocplib_i18n
+    js_of_ocaml.ppx
+    learnocaml_app_common
+    learnocaml_ppx_metaquot
+    learnocaml_ppx_metaquot_lib
+    omd)
+ (modules Editor_lib)
+ (preprocess (pps learnocaml_ppx_metaquot ppx_ocplib_i18n js_of_ocaml.ppx ))
+)
+
+
+(library
+ (name test_spec)
+ (wrapped false)
+ (modes byte)
+ (flags :standard -warn-error -4-42-44-45-48-33-27-32-34)
+ (libraries
+   ty
+   toploop
+   learnocaml_ppx_metaquot
+   learnocaml_ppx_metaquot_lib
+   ocplib-json-typed
+   learnocaml_data
+   learnocaml_repository
+   testing
+   ocplib_i18n
+   editor_lib
+   grading
+   )
+ (modules Test_spec)  
+ (preprocess (pps ppx_ocplib_i18n learnocaml_ppx_metaquot))
+ )
+
+
+(library
+ (name learnocaml_editor_tab)
+ (modes byte)
+ (flags :standard -warn-error -6-9-27-33-39)
+ (libraries ezjsonm
+            ace
+	    sha
+            learnocaml_repository
+            learnocaml_app_common
+            learnocaml_toplevel
+            js_of_ocaml.ppx
+            ocplib_i18n
+	    editor_lib)
+ (modules Learnocaml_editor_tab)
+ (preprocess (pps ppx_ocplib_i18n js_of_ocaml.ppx))
+)
+
+
+(executable
+ (name new_exercise)
+ (flags :standard -warn-error -6-9-27-33-39)
+ (modes byte)
+ (libraries
+	ezjsonm
+         grading_jsoo
+         ace
+	 sha
+	 learnocaml_repository
+         learnocaml_app_common
+         learnocaml_toplevel
+	 learnocaml_data
+	 jsutils
+	 learnocaml_ppx_metaquot_lib
+         js_of_ocaml.ppx
+         ocplib_i18n
+	 ocplib-json-typed.browser
+	 editor_lib
+	)
+ (modules New_exercise)
+ (preprocess (pps ppx_ocplib_i18n js_of_ocaml.ppx ))
+ (js_of_ocaml
+  (flags :standard +cstruct/cstruct.js)
+  (javascript_files ../ace-lib/ace_bindings.js)))
+
+(executable
+ (name editor)
+ (flags :standard -warn-error -6-9-27-33-39)
+ (libraries
+	ezjsonm
+         grading_jsoo
+         ace
+	 sha
+	 learnocaml_repository
+         learnocaml_app_common
+         learnocaml_toplevel
+         js_of_ocaml.ppx
+	 ocplib-json-typed.browser
+         ocplib_i18n
+	 omd
+	 testing
+	 grading
+	 editor_lib
+	 jszip
+	 test_spec)
+ (modules Editor)
+ (preprocess (pps ppx_ocplib_i18n js_of_ocaml.ppx))
+ (js_of_ocaml (flags :standard --toplevel --nocmis
+                   +cstruct/cstruct.js +dynlink.js +toplevel.js)
+ (javascript_files ../ace-lib/ace_bindings.js))
+)
+
+
+(install
+ (section share)
+ (package learn-ocaml)
+ (files (editor.bc.js as www/js/editor.js)
+        (new_exercise.bc.js as www/js/new_exercise.js)))
+

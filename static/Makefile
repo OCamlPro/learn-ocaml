@@ -5,6 +5,7 @@ all: icons dune
 FILES = $(wildcard \
   js/*.js\
   js/ace/*.js\
+  js/jszip/*.js\
   *.html\
   icons/*.svg\
   icons/*.gif\

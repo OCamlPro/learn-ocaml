@@ -41,14 +41,13 @@ val create:
   unit -> t Lwt.t
 
 
-(** Parse and typecheck a given source code
+(** Parse and typecheck a given source code.
 
+    @param grading
+      Load [Embedded_grading_cmis] and ppx-metaquot in the checker toploop.
     @return [Success ()] in case of success and [Error err]
-            where [err] contains the error message otherwise.
-
-*)
-val check: t -> string -> unit toplevel_result Lwt.t
-
+            where [err] contains the error message otherwise. *)
+ val check: ?grading:bool -> t -> string -> unit toplevel_result Lwt.t
 
 (** Execute a given source code. The evaluation stops after the first
     toplevel phrase (as terminated by ";;") that fails to compile or

@@ -1,3 +1,4 @@
+
 (* This file is part of Learn-OCaml.
  *
  * Copyright (C) 2019 OCaml Software Foundation.
@@ -160,7 +161,7 @@ let nickname =
   and delete () = delete_single key enc () in
   { key = Some key ; dependent_keys = (=) key ;
     store ; retrieve ; delete ; listeners = [] }
-
+  
 let cached_exercise name =
   let key = mangle [ "cached-exercise" ; name ] in
   let enc = Learnocaml_exercise.enc in
@@ -253,3 +254,26 @@ let exercise_toplevel_history_list,
     [ "exercise-toplevel-history" ]
     ~default: Learnocaml_toplevel_history.empty_snapshot
     Learnocaml_toplevel_history.snapshot_enc
+
+(* Editor storage *) 
+let editor_index=
+  let key = mangle [ "editor-index" ] in
+  let enc = SMap.enc Editor.editor_state_enc in
+  let store value = store_single key enc value
+  and retrieve () =
+    try retrieve_single key enc () with Not_found -> SMap.empty
+  and delete () = delete_single key enc () in
+  { key = Some key ; dependent_keys = (=) key ;
+    store ; retrieve ; delete ; listeners = [] }
+  
+let editor_templates =
+  let key = mangle [ "editor-templates" ] in
+  let enc = Json_encoding.list Editor.editor_template_enc in
+  let store value = store_single key enc value
+  and retrieve () =
+    try retrieve_single key enc () with Not_found -> []
+  and delete () = delete_single key enc () in
+  { key = Some key ; dependent_keys = (=) key ;
+    store ; retrieve ; delete ; listeners = [] }
+    
+              

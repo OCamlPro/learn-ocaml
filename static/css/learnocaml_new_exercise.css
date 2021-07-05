@@ -1,0 +1,98 @@
+body{
+  background: #eee;
+}
+#page_title{
+  text-align: center;
+  font-size: 25px;
+  line-height: 50px; 
+}
+#learnocaml-main-toolbar {
+  position: fixed;
+  left: 0; top: 0;
+  color: #fff;
+  z-index: 1004;
+  border-bottom: 1px #eee solid;
+  display: flex;
+  background: #222;
+} 
+#learnocaml-main-toolbar a {
+  text-decoration: none;
+  color: #fff;
+}
+#learnocaml-main-toolbar > button {
+  border-left: 1px #eee solid !important;
+  padding: 0 10px 0 10px;
+  margin: 0;
+  background: none;
+  border: none;
+  flex: 0;
+  position: relative;
+  display: block;
+}
+#learnocaml-main-toolbar > button > * {
+  padding: 5px;
+  color: #eee;
+  text-align: center;
+}
+#learnocaml-main-toolbar::before {
+  z-index: 1004;
+  position: fixed;
+  left: 0px; height: 5px; width: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0px, rgba(0,0,0,0) 5px);
+  content:"";
+}
+@media (max-width: 549px) {
+  #learnocaml-main-toolbar {
+    height: 40px;
+    width: 100%
+  }
+  .button {
+    height: 40px;
+    min-width: 40px;
+  }
+  #learnocaml-main-toolbar::before {
+    top: 41px;
+  }
+  #learnocaml-main-toolbar > button > .label {
+    display: none;
+  }
+}
+@media (min-width: 550px) {
+  #learnocaml-main-toolbar {
+    height: 60px;
+    width: 100%;
+  }
+  .button {
+    height: 60px;
+    min-width: 60px;
+  }
+  #learnocaml-main-toolbar::before {
+    top: 61px;
+  }
+}
+
+#learnocaml-tabs > * {
+  position: absolute;
+  z-index: 997;
+  background: #eee;
+  padding: 0;
+  opacity: 0;
+}
+#learnocaml-tabs > *.front-tab {
+  z-index: 998;
+  opacity: 1;
+}
+#learnocaml-tabs > * {
+  left: 0px; top: 15px; right: 0px; bottom: 0px;
+}
+
+
+.splitted {
+  display: flex;
+  justify-content: start
+  
+}
+
+.splitted:first-child{
+  margin-right: 50px;
+}

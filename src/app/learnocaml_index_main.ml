@@ -512,6 +512,11 @@ let teacher_tab token a b () =
   Learnocaml_teacher_tab.teacher_tab token a b () >>= fun div ->
   Lwt.return div
 
+let editor_tab a b () =
+  show_loading[%i"Loading Editor"] @@ fun () ->
+  Learnocaml_editor_tab.editor_tab a b () >>= fun div ->
+  Lwt.return div                                    
+ 
 let get_stored_token () =
   Learnocaml_local_storage.(retrieve sync_token)
 
@@ -689,7 +694,11 @@ let () =
        then [ "playground", ([%i"Playground"], playground_tab token) ] else []) @
       (match token with
        | Some t when Token.is_teacher t ->
-           [ "teacher", ([%i"Teach"], teacher_tab t) ]
+          [ "teacher", ([%i"Teach"], teacher_tab t);
+            "editor", ([%i"Editor"], editor_tab) ]
+       | None ->
+          (* FIXME: could be enabled only if desired at build time *)
+          [ "editor", ([%i"Editor"], editor_tab) ]
        | _ -> [])
     in
     let container = El.tab_buttons_container in
@@ -798,8 +807,10 @@ let () =
        H.div ~a:[H.a_style "text-align: center;"]
          [token_disp_div (get_stored_token ())]]
       (fun () ->
-         Lwt.async @@ fun () ->
+        Lwt.async @@ fun () ->
+         let index = Learnocaml_local_storage.(retrieve editor_index) in
          Learnocaml_local_storage.clear ();
+         Learnocaml_local_storage.(store editor_index index);
          reload ();
          Lwt.return_unit)
   in

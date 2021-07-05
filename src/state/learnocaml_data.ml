@@ -1294,3 +1294,108 @@ module Playground = struct
 
   end
 end
+
+module Editor = struct
+  
+ 
+  type type_question= Suite | Solution | Spec ;;
+  
+  
+  type test_qst_untyped =
+    | TestAgainstSol of
+        { name: string
+        ; ty: string
+        ; gen: int
+        ; suite: string
+        ; tester: string
+        ; sampler : string }
+    | TestAgainstSpec of
+        { name: string
+        ; ty: string
+        ; gen: int
+        ; suite: string
+        ; spec : string
+        ; tester: string
+        ; sampler: string }
+    | TestSuite of
+        { name: string;
+          ty: string;
+          suite: string;
+          tester :string };;
+  
+
+
+type exercise =
+  { id : string ;
+    prelude : string ;
+    template : string ;
+    descr : string ;
+    prepare : string ;
+    test : string ;
+    solution : string ;
+    max_score : int ;
+  }
+  
+  
+  let exercise_encoding =
+  let open Json_encoding in
+  conv
+    (fun { id; prelude; template; descr; prepare; test; solution; max_score } ->
+       id, prelude, template, descr, prepare, test, solution, max_score)
+    (fun (id, prelude, template, descr, prepare, test, solution, max_score) ->
+       { id ; prelude ; template ; descr ; prepare ; test ; solution ; max_score })
+    (obj8
+       (req "id" string)
+       (req "prelude" string)
+       (req "template" string)
+       (req "descr" string)
+       (req "prepare" string)
+       (req "test" string)
+       (req "solution" string)
+       (req "max_score" int))
+
+
+
+  type editor_state =
+    { exercise : exercise;
+      metadata : Exercise.Meta.t;}
+
+  let editor_state_enc =
+    J.conv
+      (fun {exercise; metadata } ->
+        (exercise, metadata))
+      (fun (exercise, metadata) ->
+        {exercise; metadata })
+      (J.obj2
+         (J.req "exercise" exercise_encoding)
+         (J.req "metadata" Exercise.Meta.enc))
+
+  type editor_template =
+    { name : string;
+      template : string}
+
+  let editor_template_enc =
+    J.conv
+      (fun {name; template } ->
+        (name, template))
+      (fun (name, template) ->
+        {name; template})
+      (J.obj2
+         (J.req "name" J.string)
+         (J.req "template" J.string))
+        
+
+  module IMap = struct
+
+    include Map.Make(struct type t = int let compare (x:t) y = compare x y end)
+
+    (** Useful for serialization *)
+    let string_of_int_map iv =
+      
+      fold (fun i v sv -> SMap.add (string_of_int i) v sv) iv SMap.empty
+      
+    let int_of_string_map iv =
+      SMap.fold (fun s v iv -> add (int_of_string s) v iv) iv empty
+  end
+              
+end

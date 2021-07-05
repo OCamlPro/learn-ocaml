@@ -277,3 +277,13 @@ module Display_exercise :functor
       'a Learnocaml_data.token option ->
       Learnocaml_data.Exercise.Meta.t -> string -> unit Lwt.t
   end
+
+module Grade_exercise : sig
+  val get_grade :
+    ?callback:(string -> unit) ->
+    ?timeout:float ->
+    Learnocaml_exercise.t ->
+    (string -> (Learnocaml_report.t * string * string * string) Lwt.t) Lwt.t
+  val display_report :
+    Learnocaml_exercise.t -> Learnocaml_data.Report.t -> int
+end

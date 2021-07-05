@@ -1,0 +1,157 @@
+begin program "new_exercise"
+  comp_requires = "ppx_ocplib_i18n:asm"
+ requires = [
+    "ezjsonm"
+    "grading-jsoo"
+    "ace"
+    "learnocaml-state"
+    "learnocaml-repository"
+    "learnocaml-app-common"
+    "learnocaml-toplevel"
+    "jsutils"
+    "ppx_metaquot_lib"
+    "js_of_ocaml.ppx"
+    "ocplib_i18n"
+    "ocplib-json-typed.browser"
+    "translate"
+    "editor_lib"
+  ]
+  files = [
+    "new_exercise.ml" ( comp = [ ppx_js ppx_ocplib_i18n]  )
+  ]
+    build_rules = [
+    "%{new_exercise_FULL_DST_DIR}%/new_exercise.js" (
+      build_target = true
+      sources = %byte_exe( p = "new_exercise" )
+      commands = [ {
+        "js_of_ocaml"
+           "+cstruct/cstruct.js"
+           "%{ace_FULL_SRC_DIR}%/ace_bindings.js"            
+           %byte_exe( p = "new_exercise" )
+      } ]
+    )
+  ]
+end
+
+begin program "testhaut"
+  comp_requires = "ppx_ocplib_i18n:asm"
+ requires = [
+    "ezjsonm"
+    "grading-jsoo"
+    "ace"
+    "learnocaml-state"
+    "learnocaml-repository"
+    "learnocaml-app-common"
+    "learnocaml-toplevel"
+    "jsutils"
+    "jsutils"
+    "ppx_metaquot_lib"
+    "js_of_ocaml.ppx"
+    "ocplib_i18n"
+    "ocplib-json-typed.browser"
+    "editor_lib"
+    "translate"
+    "test-spec"
+  ]
+  files = [
+    "testhaut.ml" ( comp = [ ppx_js ppx_ocplib_i18n]  )
+  ]
+    build_rules = [
+    "%{testhaut_FULL_DST_DIR}%/testhaut.js" (
+      build_target = true
+      sources = %byte_exe( p = "testhaut" )
+      commands = [ {
+	"js_of_ocaml"
+           "+cstruct/cstruct.js"
+           "+dynlink.js"
+ 	   "+toplevel.js"
+ 	   "--toplevel"
+ 	   "--nocmis"
+ 	   "%{ace_FULL_SRC_DIR}%/ace_bindings.js"
+           %byte_exe( p = "testhaut" )
+      } ]
+    )
+  ]
+end
+
+begin library "editor_lib"
+  comp_requires = [ "ppx_ocplib_i18n:asm" "ppx_metaquot:asm" ]
+
+  files = [
+    "editor_lib.ml" ( comp = [ ppx_js ppx_ocplib_i18n "-ppx" %asm_exe( p = "ppx_metaquot") ] ) 
+  ]
+  requires = [
+    "ace"
+    "learnocaml-repository" 
+    "ocplib_i18n"
+    "js_of_ocaml.ppx"
+    "learnocaml-app-common"
+    "translate"
+    "omd"
+    ]
+
+end
+
+
+begin library "test-spec"
+  comp_requires = "ppx_metaquot:asm" "ppx_ocplib_i18n:asm"
+  link += [ "-linkall" ]
+  requires = [
+    "ty"
+    "toploop"
+    "ppx_metaquot"
+    "ppx_metaquot_lib"
+    "ocplib-json-typed"
+    "learnocaml-state"
+    "learnocaml-repository"
+    "testing"
+    "ocplib_i18n"
+    "editor_lib"
+    "translate"
+  ]
+  files = [
+    "test_spec.ml" ( comp += [ ppx_js "-ppx" %asm_exe( p = "ppx_metaquot") ppx_ocplib_i18n ] )
+  ]
+end
+
+
+begin program "editor"
+  comp_requires = "ppx_ocplib_i18n:asm"
+
+  requires = [
+    "ezjsonm"
+    "grading-jsoo"
+    "ace"
+    "learnocaml-repository"
+    "learnocaml-app-common"
+    "learnocaml-toplevel"
+    "ocplib_i18n"
+    "js_of_ocaml.ppx"
+    "ocplib-json-typed.browser"
+    "omd"
+    "testing"
+    "grading"
+    "editor_lib"
+    "test-spec"
+    "translate"
+ ]
+  files = [
+    "editor.ml" ( comp = [ ppx_js ppx_ocplib_i18n]  )
+  ]
+  build_rules = [
+    "%{editor_FULL_DST_DIR}%/editor.js" (
+      build_target = true
+      sources = %byte_exe( p = "editor" )
+      commands = [ {
+        "js_of_ocaml"
+           "+cstruct/cstruct.js"
+           "+dynlink.js"
+ 	   "+toplevel.js"
+ 	   "--toplevel"
+ 	   "--nocmis"
+ 	   "%{ace_FULL_SRC_DIR}%/ace_bindings.js"
+           %byte_exe( p = "editor" )
+      } ]
+    )
+  ]
+end

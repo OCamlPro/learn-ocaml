@@ -1,0 +1,191 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">
+    <title>Learn OCaml by OCamlPro - Editor</title>
+    <link rel="icon" type="image/x-icon" href="icons/favicon.ico" />
+    <!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="icons/favicon.ico"     /><![endif]-->
+    <link rel="stylesheet" href="/css/learnocaml_common.css">
+    <link rel="stylesheet" href="/css/learnocaml_editor.css">
+    <link rel="stylesheet" href="/css/learnocaml_report.css">
+    <link rel="stylesheet" href="/css/learnocaml_tryocaml.css">
+    <link rel="stylesheet" href="/css/learnocaml_main.css">
+
+    <script src="/js/ace/ace.js" type="text/javascript" charset="utf-8" defer></script>
+    <script src="/js/ace/mode-ocaml.js" type="text/javascript" charset="utf-8" defer></script>
+    
+    <script src="/js/jszip/jszip.min.js" type="text/javascript" charset="utf-8" defer></script>
+    <script src="/js/jszip/learnocaml_jszip_wrapper.js" type="text/javascript" charset="utf-8" defer></script>
+
+    <!-- var editor = ace.edit("learnocaml-exo-editor-pane"); -->
+    <!-- editor.setOptions({ fontFamily: 'Inconsolata', fontSize: "18px" }); -->
+    <script language="JavaScript" src="/js/learnocaml-config.js"></script>
+    <script language="JavaScript" src="/js/editor.js" defer></script>
+</head>
+
+<body>
+    <!-- Should be kept untouched. -->
+    <div style="display:none">
+        <!-- (Weakly) preload images. -->
+        <img src="/icons/tryocaml_loading_1.gif"><img src="/icons/tryocaml_loading_2.gif">
+        <img src="/icons/tryocaml_loading_3.gif"><img src="/icons/tryocaml_loading_4.gif">
+        <img src="/icons/tryocaml_loading_5.gif"><img src="/icons/tryocaml_loading_6.gif">
+        <img src="/icons/tryocaml_loading_7.gif"><img src="/icons/tryocaml_loading_8.gif">
+    </div>
+    <!-- Three states: .initial, .loading and .loaded.
+         Set to .loaded when initial loading finished.
+         Set to .loading while loading, then to .loaded. -->
+    <div id="learnocaml-exo-loading" class="loading-layer initial">
+        <div id="chamo"><img id="chamo-img" src="/icons/tryocaml_loading_5.gif"></div>
+        <div class="messages">
+            <ul>
+                <li id="txt_preparing">Preparing the environment</li>
+            </ul>
+        </div>
+    </div>
+    <script language="JavaScript">
+        var n = Math.floor(Math.random() * 9) + 1;
+        document.getElementById('chamo-img').src = '/icons/tryocaml_loading_' + n + '.gif';
+    </script>
+    <div id="learnocaml-loading" class="loading-layer loaded">
+    </div>
+    <!-- Anything below could be recreated dynamically, but IDs must be kept. -->
+    <div id="learnocaml-exo-toolbar">
+        <a href="./">
+            <div class="logo">
+                <img src="/icons/logo_ocaml.svg">
+                <span>Learn OCaml</span>
+                <img src="/icons/logo_ocp.svg">
+            </div>
+        </a>
+        <!--
+      <button id="learnocaml-exo-button-grade">
+        <img src="icons/icon_reload_light.svg">
+        <span class="label">Grade!</span>
+      </button>
+      -->
+    </div>
+    <div id="learnocaml-exo-tab-buttons">
+
+        <button id="learnocaml-exo-button-editor" title="Type here the solution of the exercise">Solution</button>
+        <!-- To select a tab, make it the only one whose
+           button and tab have the class .front-tab.
+           Don't set the editor to .front-tab initially. -->
+
+        <button id="learnocaml-exo-button-template" title="Type here or generate the template the student will complete or correct">
+      Template</button>
+
+        <button id="learnocaml-exo-button-prelude" title="Type here the definitions of types and functions given to the student">
+      Prelude</button>
+
+        <button id="learnocaml-exo-button-prepare" title="Type here hidden definitions given to the student">Prepare</button>
+
+        <button id="learnocaml-exo-button-toplevel" class="front-tab">Toplevel</button>
+
+        <!-- When graded, apply one of .partial, .success or .failure.
+           The score must be put in a span.score. -->
+
+        <button id="learnocaml-exo-button-question" title="Type here the wording of the exercise in Markdown">Question</button>
+
+        <button id="learnocaml-exo-button-test" class="front-tab" title="Type here the tests code">Test</button>
+
+        <button id="learnocaml-exo-button-report">Report</button>
+
+        <!-- Any other button can be added. -->
+    </div>
+    <div id="learnocaml-exo-tabs">
+        <!-- Same comment as above for the first two tabs. -->
+        <div id="learnocaml-exo-tab-editor">
+            <div id="learnocaml-exo-editor-pane" class="pane">Editor</div>
+            <div id="learnocaml-exo-editor-toolbar" class="buttons">
+                <!-- Any button can be added.
+               Structure: button>img, button>span.label. -->
+                <!-- <button> -->
+                <!--   <img src="icons/icon_typecheck_light.svg"> -->
+                <!--   <span class="label">Typecheck</span> -->
+                <!-- </button> -->
+                <!-- <button> -->
+                <!--   <img src="icons/icon_cleanup_light.svg"> -->
+                <!--   <span class="label">Reset</span> -->
+                <!-- </button> -->
+                <!-- <button> -->
+                <!--   <img src="icons/icon_download_light.svg"> -->
+                <!--   <span class="label">Download</span> -->
+                <!-- </button> -->
+                <!-- <button> -->
+                <!--   <img src="icons/icon_save_light.svg"> -->
+                <!--   <span class="label">Save</span> -->
+                <!-- </button> -->
+            </div>
+        </div>
+        <div id="learnocaml-exo-tab-toplevel" class="front-tab">
+            <div id="learnocaml-exo-toplevel-pane" class="toplevel-pane">
+                <!-- <pre class="output"></pre> -->
+                <!-- <pre class="input"> -->
+                <!--   <code id="sharp" class="sharp"></code> -->
+                <!--   <textarea class="console" style="height: 28px">saucisse</textarea> -->
+                <!-- </pre> -->
+            </div>
+            <div id="learnocaml-exo-toplevel-toolbar" class="buttons">
+                <!-- Any button can be added.
+               Structure: button>img, button>span.label. -->
+                <!-- <button> -->
+                <!--   <img src="icons/icon_run_dark.svg"> -->
+                <!--   <span class="label">Reset &amp; Run</span> -->
+                <!-- </button> -->
+                <!-- <button> -->
+                <!--   <img src="icons/icon_cleanup_dark.svg"> -->
+                <!--   <span class="label">Reset</span> -->
+                <!-- </button> -->
+                <!-- <button> -->
+                <!--   <img src="icons/icon_download_dark.svg"> -->
+                <!--   <span class="label">Download</span> -->
+                <!-- </button> -->
+            </div>
+        </div>
+
+        <div id="learnocaml-exo-tab-report">
+            <!-- Using an iframe is the easiest way to isolate the CSSs. -->
+            <!-- <iframe src="mockup_report.html"></iframe> -->
+            <img src="/icons/icon_reload_dark.svg" style="position: absolute; top: 50%; left: 50%;
+                    margin: -100px 0 0 -100px; width: 200px;
+                    opacity: 0.2">
+            <span id="txt_grade_report" style="position: absolute; top: 50%; margin: -12px 0 0 0;
+                 line-height: 24px; font-size: 24px; text-shadow: 0 0 5px #888;
+                 width: 100%; text-align: center;">
+          <!--Click the Grade! button to test your solution-->
+        </span>
+        </div>
+
+        <div id="learnocaml-exo-tab-template">
+            <div id="learnocaml-exo-template-pane" class="template-pane"></div>
+            <div id="learnocaml-exo-template-toolbar" class="buttons"></div>
+        </div>
+
+        <div id="learnocaml-exo-tab-prelude">
+            <div id="learnocaml-exo-prelude-pane" class="prelude-pane"></div>
+            <div id="learnocaml-exo-prelude-toolbar" class="buttons"></div>
+        </div>
+
+        <div id="learnocaml-exo-tab-prepare">
+            <div id="learnocaml-exo-prepare-pane" class="prepare-pane"></div>
+            <div id="learnocaml-exo-prepare-toolbar" class="buttons"></div>
+        </div>
+
+        <div id="learnocaml-exo-tab-question">
+            <div id="learnocaml-exo-question-mark" class="questions-mark"></div>
+            <div id="learnocaml-exo-question-html" class="questions-html"></div>
+        </div>
+
+        <div id="learnocaml-exo-tab-test">
+            <div id="learnocaml-exo-test-pane" class="test-pane"></div>
+            <div id="learnocaml-exo-test-toolbar" class="buttons"></div>
+        </div>
+
+        <!-- Any tab can be added. -->
+    </div>
+</body>
+
+</html>

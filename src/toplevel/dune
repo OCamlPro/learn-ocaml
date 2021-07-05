@@ -20,6 +20,8 @@
             toploop_results
             ocplib-ocamlres.runtime
             embedded_cmis
+	    grading
+	    learnocaml_ppx_metaquot_lib
             learnocaml_toplevel_worker_messages)
  (modules Learnocaml_toplevel_worker_main)
  (preprocess (pps js_of_ocaml.ppx))

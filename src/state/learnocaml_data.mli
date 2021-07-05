@@ -438,3 +438,54 @@ module Playground : sig
 
   end
 end
+                   
+module Editor : sig     
+     
+  type type_question = Suite | Solution | Spec
+
+  type test_qst_untyped =
+    | TestAgainstSol of
+        { name: string
+        ; ty: string 
+        ; gen: int
+        ; suite: string
+        ; tester: string
+        ; sampler: string }
+    | TestAgainstSpec of
+        { name: string
+        ; ty: string
+        ; gen: int
+        ; suite: string
+        ; spec : string
+        ; tester: string
+        ; sampler: string }
+    | TestSuite of
+        { name: string
+        ; ty: string
+        ; suite: string
+        ; tester: string } ;;
+ 
+  type exercise =
+    { id : string ;
+      prelude : string ;
+      template : string ;
+      descr : string ;
+      prepare : string ;
+      test : string ;
+      solution : string ;
+      max_score : int ;
+    }
+
+  type editor_state =
+    { exercise : exercise;
+      metadata : Exercise.Meta.t; }
+
+  val editor_state_enc : editor_state Json_encoding.encoding
+
+  type editor_template =
+    { name : string;
+      template : string}
+
+  val editor_template_enc : editor_template Json_encoding.encoding
+    
+end

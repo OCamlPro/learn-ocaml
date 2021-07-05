@@ -113,12 +113,12 @@ let ext_alert ~title ?(buttons = [close_button [%i"OK"]]) message =
         Manip.(appendChild Elt.body) div;
         div in
   Manip.replaceChildren div [
-    H.div [
-      H.h3 [ H.txt title ];
-      H.div message;
-      H.div ~a:[ H.a_class ["buttons"] ] buttons;
+      H.div [
+          H.h3 [ H.pcdata title ];
+          H.div message;
+          H.div ~a:[ H.a_class ["buttons"] ] buttons;
+        ]
     ]
-  ]
 
 let lwt_alert ~title ~buttons message =
   let waiter, wakener = Lwt.task () in
@@ -1230,3 +1230,43 @@ module Display_exercise =
                       [ focus ; requirements ; backward ; forward ]
         ])
   end
+
+module Grade_exercise = struct
+
+let get_grade =
+  let get_worker = get_worker_code "learnocaml-grader-worker.js" in
+  fun ?callback ?timeout exercise ->
+    get_worker () >>= fun worker_js_file ->
+    Grading_jsoo.get_grade ~worker_js_file ?callback ?timeout exercise
+
+let display_report exo report =
+  let score, _failed = Report.result report in
+  let report_button = find_component "learnocaml-exo-button-report" in
+  Manip.removeClass report_button "success" ;
+  Manip.removeClass report_button "failure" ;
+  Manip.removeClass report_button "partial" ;
+  let grade =
+    let max = Learnocaml_exercise.(access File.max_score exo) in
+    if max = 0 then 999 else score * 100 / max
+  in
+  if grade >= 100 then begin
+    Manip.addClass report_button "success" ;
+    Manip.replaceChildren report_button
+      Tyxml_js.Html5.[ pcdata [%i"Report"] ]
+  end else if grade = 0 then begin
+    Manip.addClass report_button "failure" ;
+    Manip.replaceChildren report_button
+      Tyxml_js.Html5.[ pcdata [%i"Report"] ]
+  end else begin
+    Manip.addClass report_button "partial" ;
+    let pct = Format.asprintf "%2d%%" grade in
+    Manip.replaceChildren report_button
+      Tyxml_js.Html5.[ pcdata [%i"Report"] ;
+                       span ~a: [ a_class [ "score" ] ] [ pcdata pct ]]
+  end ;
+  let report_container = find_component "learnocaml-exo-tab-report" in
+  Manip.setInnerHtml report_container
+    (Format.asprintf "%a" Report.(output_html ~bare: true) report) ;
+  grade
+
+end

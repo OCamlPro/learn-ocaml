@@ -333,3 +333,11 @@ let oldify output =
 
 let format_ocaml_code code =
   pretty_html (fst (prettify_ocaml code))
+
+let get_blocks output =
+  let rec process = function
+    | [] -> ""
+    | (Answer (s,_,_,_)) :: suite -> process suite ^ s
+    | (Phrase (_,l)) :: suite -> process suite ^ (process (!l)) (* OK? *)
+    | b :: suite->(process suite) in
+  process output.blocks

@@ -99,3 +99,5 @@ val output_warning : ?phrase: phrase -> output -> Toploop_results.warning -> uni
 
 (** Format OCaml code in the style of {!output_code}. *)
 val format_ocaml_code : string -> [> `Span | `PCDATA ] Tyxml_js.Html5.elt list
+
+val get_blocks : output -> string

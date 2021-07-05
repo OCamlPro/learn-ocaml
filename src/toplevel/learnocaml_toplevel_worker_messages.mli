@@ -19,8 +19,8 @@ type _ host_msg =
   | Set_debug : bool -> unit host_msg
   | Register_callback : string * int -> unit host_msg
   | Set_checking_environment : unit host_msg
-  | Check : string -> unit host_msg
-
+  | Check : string * bool -> unit host_msg
+  
 type _ msg_ty =
   | Unit : unit msg_ty
   | Bool : bool msg_ty

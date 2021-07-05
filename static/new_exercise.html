@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">
+    <title>Learn OCaml by OCamlPro - Editor</title>
+    <link rel="icon" type="image/x-icon" href="icons/favicon.ico" />
+    <!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="icons/favicon.ico"     /><![endif]-->
+    <link rel="stylesheet" href="css/learnocaml_common.css">
+    <link rel="stylesheet" href="css/learnocaml_new_exercise.css">
+    <link rel="stylesheet" href="css/learnocaml_report.css">
+    <link rel="stylesheet" href="css/learnocaml_tryocaml.css">
+    <script src="js/ace/ace.js" type="text/javascript" charset="utf-8" defer></script>
+    <script language="JavaScript" src="/js/learnocaml-config.js"></script>
+    <script language="JavaScript" src="js/new_exercise.js" defer></script>
+  </head>
+
+  <body>
+    <style type="text/css">
+      a:link {
+      text-decoration: none;
+      }
+      
+      input:invalid {
+      box-shadow: 0 0 1px 1px red;
+      }
+      
+      .error {
+      color: darkred;
+      }
+    </style>
+    <div style="display:none">
+      <!-- preload -->
+      <img src="icons/tryocaml_loading_1.gif"><img src="icons/tryocaml_loading_2.gif">
+      <img src="icons/tryocaml_loading_3.gif"><img src="icons/tryocaml_loading_4.gif">
+      <img src="icons/tryocaml_loading_5.gif"><img src="icons/tryocaml_loading_6.gif">
+      <img src="icons/tryocaml_loading_7.gif"><img src="icons/tryocaml_loading_8.gif">
+    </div>
+    <div id="learnocaml-main-toolbar">
+      <div class="logo">
+        <img src="icons/logo_ocaml.svg">
+        <span>Learn OCaml</span>
+        <img src="icons/logo_ocp.svg">
+      </div>
+      <div>
+        <a href="index.html#activity=editor">
+          <button id="cancel" type="button" class="button">Cancel</button>
+        </a>
+        <button id="save" type="submit" class="button">Save</button>
+      </div>
+    </div>
+  <div style="margin-top: 30px;height: 1px;"></div>   
+    <div id="page_title">
+      <h1 id="txt_new_exo">New Exercise</h1>
+    </div>
+    <!--form-->
+    <div style="margin: 0 5% ">
+      <p>
+        <label id="txt_id" for="identifier">Unique identifier:<br></label>
+        <input type="text" id="identifier" name="identifier" value="" maxlength="250" size="40" required pattern="[a-z0-9_-]+" autofocus />
+        <span id="id_error" class="error" aria-live="polite"></span>
+      </p>
+      <p>
+        <label id="txt_title" for="title">Title (unique too):<br></label>
+        <input type="text" id="title" name="title" value="" size="40" required pattern="[^ \t]|([^ \t].*[^ \t])" />
+        <span id="title_error" class="error" aria-live="polite"></span>
+      </p>
+      <p>
+        <label id="txt_authors" for="authors">Authors : <br> </label>
+        <input type="text" id="authors" name="title" placeholder="Firstname Name, mail ; ... " size="40" />
+      </p>
+      <div class="splitted">
+        <div>
+          <label id="txt_requiered" for="authors">Required skills : <br></label>
+          <input type="text" id="required" name="title" placeholder="Skill1 Skill2 ... " size="40" style="display: inline" />
+        </div>
+        <div style="width: 20px"></div>
+        <div>
+          <label id="txt_focus" for="focus">Trained skills :  </label>
+          <br>
+          <input type="text" id="focus" name="title" placeholder="Skill1 Skill2 ... " size="40" style="display: inline" />
+        </div>
+
+      </div>
+      <p>
+        <label id="txt_descr" for="description">Description of the exercise:<br></label>
+        <textarea id="description" name="description" cols="80" rows="12"></textarea>
+      </p>
+      <p>
+        <label id="txt_diff" for="difficulty">Difficulty level:<br></label>
+        <select name="difficulty" id="difficulty" size="1" required />
+          <option value="0.">0</option>
+          <option value="0.5">0.5</option>
+          <option value="1.">1</option>
+          <option value="1.5">1.5</option>
+          <option value="2.">2</option>
+          <option value="2.5">2.5</option>
+          <option value="3.">3</option>
+          <option value="3.5">3.5</option>
+          <option value="4.">4</option>
+        </select>
+      </p>
+      <div class="splitted">
+        <div>
+          <label id="txt_backward" for="backward">Exercises to do before (Ids) : <br> </label>
+          <input type="text" id="backward" name="title" placeholder="id1 id2 ... " size="40" />
+        </div>
+        <div style="width: 20px"></div>
+        <div>
+          <label id="txt_forward" for="forkward">Exercises to do after (Ids) : <br> </label>
+          <input type="text" id="forward" name="title" placeholder="id1 id2 ... " size="40" />
+        </div>
+      </div>
+<!--/form-->
+  </div>
+
+</body>
+
+</html>

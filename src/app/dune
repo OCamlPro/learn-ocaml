@@ -24,6 +24,7 @@
     learnocaml_data
     learnocaml_api
     sha
+    grading_jsoo
     ocplib_i18n)
 )
 
@@ -38,13 +39,14 @@
             learnocaml_app_common
             learnocaml_toplevel
             js_of_ocaml.ppx
-            ocplib_i18n)
+            ocplib_i18n
+	    learnocaml_editor_tab)
  (modules Learnocaml_teacher_tab
           Learnocaml_index_main)
  (preprocess (pps ppx_ocplib_i18n js_of_ocaml.ppx))
  (js_of_ocaml
   (flags :standard +cstruct/cstruct.js)
-  (javascript_files ../ace-lib/ace_bindings.js))
+  (javascript_files ../ace-lib/ace_bindings.js ../../static/js/jszip/learnocaml_jszip_wrapper.js))
 )
 
 (executable
@@ -59,7 +61,8 @@
             learnocaml_app_common
             learnocaml_toplevel
             js_of_ocaml.ppx
-            ocplib_i18n)
+	    editor_lib
+	    ocplib_i18n)
  (modules Learnocaml_exercise_main)
  (preprocess (pps ppx_ocplib_i18n js_of_ocaml.ppx))
  (js_of_ocaml
