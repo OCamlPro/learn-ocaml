@@ -1,6 +1,6 @@
 (* This file is part of Learn-OCaml.
  *
- * Copyright (C) 2019 OCaml Software Foundation.
+ * Copyright (C) 2019-2020 OCaml Software Foundation.
  * Copyright (C) 2016-2018 OCamlPro.
  *
  * Learn-OCaml is distributed under the terms of the MIT license. See the
@@ -177,10 +177,10 @@ let () =
     Tyxml_js.Html5.[ h1 [ txt ex_meta.Exercise.Meta.title ] ;
                      Tyxml_js.Of_dom.of_iFrame text_iframe ] ;
   (* ---- editor pane --------------------------------------------------- *)
-  let editor, ace = setup_editor solution in
+  let editor, ace = setup_editor id solution in
   let module EB = Editor_button (struct let ace = ace let buttons_container = editor_toolbar end) in
   EB.cleanup (Learnocaml_exercise.(access File.template exo));
-  EB.sync token id;
+  EB.sync token id (fun () -> Ace.set_synchronized ace) ;
   EB.download id;
   EB.eval top select_tab;
   let typecheck = typecheck top ace editor in
@@ -264,7 +264,8 @@ let () =
             Some solution, None
         in
         token >>= fun token ->
-        sync_exercise token id ?answer ?editor >>= fun _save ->
+        sync_exercise token id ?answer ?editor (fun () -> Ace.set_synchronized ace)
+        >>= fun _save ->
         select_tab "report" ;
         Lwt_js.yield () >>= fun () ->
         Ace.focus ace ;
@@ -283,7 +284,7 @@ let () =
         Ace.focus ace ;
         typecheck true
   end ;
-  Window.onunload (fun _ev -> local_save ace id; true);
+  Window.onbeforeunload (fun _ -> (not (Ace.is_synchronized ace), false));
   (* ---- return -------------------------------------------------------- *)
   toplevel_launch >>= fun _ ->
   typecheck false >>= fun () ->

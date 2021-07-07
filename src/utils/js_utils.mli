@@ -381,6 +381,9 @@ module Window : sig
   val onunload:
     ?win:Dom_html.window Js.t ->
     (Dom_html.event Js.t -> bool) -> unit
+  val onbeforeunload:
+    ?win:Dom_html.window Js.t ->
+    (Dom_html.event Js.t -> bool * bool) -> unit
   val onhashchange:
     ?win:Dom_html.window Js.t ->
     (Dom_html.hashChangeEvent Js.t -> bool) -> unit

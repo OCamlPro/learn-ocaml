@@ -506,8 +506,8 @@ let do_delete ace_editor =
     Ace.remove ace_editor "left"
   end
 
-let create_ocaml_editor div =
-  let ace = Ace.create_editor div in
+let create_ocaml_editor div check_valid_state =
+  let ace = Ace.create_editor div check_valid_state in
   Ace.set_mode ace "ace/mode/ocaml.ocp";
   Ace.set_tab_size ace !config.indent.IndentConfig.i_base;
   let editor = { ace; current_error = None; current_warnings = [] } in

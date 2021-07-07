@@ -25,7 +25,7 @@ type warning = {
   msg: string;
 }
 
-val create_ocaml_editor: Dom_html.divElement Js.t -> editor
+val create_ocaml_editor: Dom_html.divElement Js.t -> ((string -> unit) -> unit) -> editor
 val get_editor: editor -> editor Ace.editor
 
 val report_error: editor -> ?set_class: bool -> error option -> warning list -> unit Lwt.t

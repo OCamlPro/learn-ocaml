@@ -26,8 +26,12 @@ let main () =
   disable_button_group toplevel_buttons_group (* enabled after init *) ;
   let toplevel_toolbar = find_component "learnocaml-exo-toplevel-toolbar" in
   let editor_toolbar = find_component "learnocaml-exo-editor-toolbar" in
-  let toplevel_button =
-    button ~container: toplevel_toolbar ~theme: "dark" ~group:toplevel_buttons_group ?state:None in
+  let toplevel_button ~icon label cb =
+    ignore @@
+      button
+        ~icon ~container: toplevel_toolbar
+        ~theme: "dark" ~group:toplevel_buttons_group ?state:None label cb
+  in
   let id = match Url.Current.path with
     | "" :: "playground" :: p | "playground" :: p ->
         String.concat "/" (List.map Url.urldecode (List.filter ((<>) "") p))
@@ -59,7 +63,7 @@ let main () =
   (* ---- toplevel pane ------------------------------------------------- *)
   init_toplevel_pane toplevel_launch top toplevel_buttons_group toplevel_button ;
   (* ---- editor pane --------------------------------------------------- *)
-  let editor, ace = setup_editor solution in
+  let editor, ace = setup_editor id solution in
   let module EB = Editor_button (struct let ace = ace let buttons_container = editor_toolbar end) in
   EB.cleanup playground.Playground.template;
   EB.download id;

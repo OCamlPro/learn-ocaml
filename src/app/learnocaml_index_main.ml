@@ -811,7 +811,7 @@ let () =
           Lwt.return_unit);
       [%i"Sync workspace"], "sync", (fun () ->
           catch_with_alert @@ fun () ->
-          sync () >>= fun _ -> Lwt.return_unit);
+          sync () ignore >>= fun _ -> Lwt.return_unit);
       [%i"Export to file"], "download", download_save;
       [%i"Import"], "upload", import_save;
       [%i"Download all source files"], "download", download_all;

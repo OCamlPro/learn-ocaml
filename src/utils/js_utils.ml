@@ -1143,6 +1143,16 @@ module Window = struct
   let head win = Tyxml_js.Of_dom.of_head win##.document##.head
   let onunload ?(win = Dom_html.window) f =
     win##.onunload := Dom_html.handler (fun ev -> Js.bool (f ev))
+  let onbeforeunload ?(win = Dom_html.window) f =
+    win##.onbeforeunload := Dom_html.handler (fun ev ->
+                                let (status, propagate) = f ev in
+                                if status then (
+                                   Js.bool propagate
+                                ) else
+                                  (
+                                    Js.(Unsafe.eval_string "undefined");
+                                  )
+                             )
   let onresize ?(win = Dom_html.window) f =
     win##.onresize := Dom_html.handler (fun ev -> Js.bool (f ev))
   let prompt ?(win = Dom_html.window) ?(value = "") msg =

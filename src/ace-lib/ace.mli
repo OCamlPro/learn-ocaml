@@ -17,7 +17,13 @@ type loc = {
   loc_end: int * int;
 }
 
-val create_editor: Dom_html.divElement Js.t -> 'a editor
+val create_editor: Dom_html.divElement Js.t -> ((string -> unit) -> unit) -> 'a editor
+
+val is_synchronized : 'a editor -> bool
+
+val set_synchronized : 'a editor -> unit
+
+val register_sync_observer : 'a editor -> (bool -> unit) -> unit
 
 val set_mode: 'a editor -> string -> unit
 

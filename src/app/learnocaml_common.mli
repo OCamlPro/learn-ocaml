@@ -118,18 +118,23 @@ val set_state_from_save_file :
 (** Gets a save file containing the locally stored data *)
 val get_state_as_save_file : ?include_reports:bool -> unit -> Save.t
 
-(** Sync the local save state with the server state, and returns the merged save
-    file. The save will be created on the server if it doesn't exist.
+(** 
+    [sync token on_sync] synchronizes the local save state with the server state,
+    and returns the merged save file. The save will be created on the server
+    if it doesn't exist. [on_sync ()] is called when this is done.
 
-    This syncs student {b,content}, but never the reports which are only synched
-    on "Grade" *)
-val sync: Token.t -> Save.t Lwt.t
+    Notice that this function synchronizes student {b,content} but not the 
+    reports which are only synchronized when an actual "grading" is done.
+    
+*)
+val sync: Token.t -> (unit -> unit) -> Save.t Lwt.t
 
 (** The same, but limiting the submission to the given exercise, using the given
     answer if any, and the given editor text, if any. *)
 val sync_exercise:
   Token.t option -> ?answer:Learnocaml_data.Answer.t -> ?editor:string ->
   Learnocaml_data.Exercise.id ->
+  (unit -> unit) ->
   Save.t Lwt.t
 
 val countdown:
@@ -210,10 +215,10 @@ module Editor_button (E : Editor_info) : sig
   val cleanup : string -> unit
   val download : string -> unit
   val eval : Learnocaml_toplevel.t -> (string -> 'a) -> unit
-  val sync : Token.t option Lwt.t -> Learnocaml_data.SMap.key -> unit
+  val sync : Token.t option Lwt.t -> Learnocaml_data.SMap.key -> (unit -> unit) -> unit
 end
 
-val setup_editor : string -> Ocaml_mode.editor * Ocaml_mode.editor Ace.editor
+val setup_editor : string -> string -> Ocaml_mode.editor * Ocaml_mode.editor Ace.editor
 
 val typecheck :
   Learnocaml_toplevel.t ->
