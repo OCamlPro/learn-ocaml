@@ -2,6 +2,7 @@ all: static build
 
 DUNE = dune
 DUNE_ARGS = --profile=release
+INDEX_ODOC_PATH = docs/odoc.html
 
 build-deps:
 	opam install . --deps-only --locked
@@ -17,6 +18,7 @@ static:
 .PHONY: doc
 doc:
 	@${DUNE} build ${DUNE_ARGS} @doc
+	ln -sf $(PWD)/_build/default/_doc/_html/index.html ${INDEX_ODOC_PATH}
 
 .PHONY: install
 install: static doc
@@ -84,6 +86,7 @@ clean:
 	@${MAKE} -C static clean
 	-rm -rf www
 	-find . -name "*~" -delete
+	-rm -f ${INDEX_ODOC_PATH}
 
 travis: # From https://stackoverflow.com/questions/21053657/how-to-run-travis-ci-locally
 	BUILDID="build-$$RANDOM";					\

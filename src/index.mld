@@ -1,0 +1,13 @@
+{0 The [learn-ocaml] online platform (engine)}
+
+This contains the documentation for the exposed modules used to build binaries
+forming the engine for the learn-ocaml platform, and the common files.
+
+{1 List of documented modules}
+
+Modules documentation could be found here:
+
+{ul
+	{li {{: Test_lib/index.html} [Test_lib]}}
+	{li {{: Learnocaml_report/index.html} [Learnocaml_report]}}
+}
