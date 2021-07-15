@@ -53,7 +53,7 @@ type t
      the previous outputs are kept and marked as old
      (see {!Learnocaml_toplevel_output.oldify}). Otherwise, the output console is cleaned.
    @param input_sizing
-     See (!Learnocaml_toplevel_input.sizing}.
+     See {!Learnocaml_toplevel_input.sizing}.
    @param history
      The history storage to use. If none, a new volatile one is created.
    @param display_welcome
@@ -98,7 +98,7 @@ val make_flood_popup:
 
     @param timeout
       See {!create}.
-    @returns
+    @return
       Returns [Success true] whenever the code was correctly
       typechecked and its evaluation did not raise an exception nor
       timeouted and [false] otherwise. *)
@@ -114,7 +114,7 @@ val execute_phrase: t ->
       Tells if answers of the toplevel are to be displayed.
     @param message
       Displays [(* message *)] where the code should have been echoed.
-    @returns
+    @return
        Returns [Success true] whenever the code was correctly
        typechecked and its evaluation did not raise an exception nor
        timeouted and [false] otherwise. *)
@@ -152,7 +152,7 @@ val prerr_string: t -> string -> unit
 val print_html: t -> string -> unit
 
 (** scroll the view to show the last phrase.
-    Calls {!Learnocaml_toplevel_output.scroll. *)
+    Calls {!Learnocaml_toplevel_output.scroll}. *)
 val scroll: t -> unit
 
 (** Execute the content of the input [textarea].

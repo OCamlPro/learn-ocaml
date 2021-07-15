@@ -210,9 +210,8 @@ module Exercise: sig
       Token.Set.t -> assignments -> (status * Token.Set.t) list
 
     (** Computes the current set of skills from the base list (from Meta.t),
-        using the mutable changes in the Status.skill list. E.g. {[
-          get_skills ~base:meta.Meta.requirements st.skills_prereq
-        ]} *)
+        using the mutable changes in the Status.skill list. E.g.
+        {[get_skills ~base:meta.Meta.requirements st.skills_prereq]} *)
     val get_skills: base:string list -> skill list -> string list
 
     (** The opposite of [get_skills]: retrieves the base from the already
@@ -226,7 +225,8 @@ module Exercise: sig
     val skills_focus: Meta.t -> t -> string list
 
     (** Generates a skill list that can be saved, such that
-        {[get_skills ~base (make_skills ~base l) = l]}.
+        {[get_skills ~base (make_skills ~base l) = l]}
+        .
 
         Remember to call [skills_base] first on the base if you got the
         skills from the meta returned by the server. *)
