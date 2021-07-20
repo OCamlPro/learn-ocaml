@@ -123,7 +123,8 @@
         %{ocaml-config:standard_library}/compiler-libs/ast_mapper.cmi
         %{ocaml-config:standard_library}/compiler-libs/parsetree.cmi
         %{ocaml-config:standard_library}/compiler-libs/location.cmi
-        %{ocaml-config:standard_library}/compiler-libs/parse.cmi)
+        %{ocaml-config:standard_library}/compiler-libs/parse.cmi
+        %{ocaml-config:standard_library}/compiler-libs/pprintast.cmi)
        (:generated-cmis
         ../ppx-metaquot/.ty.objs/byte/ty.cmi
         ../ppx-metaquot/.fun_ty.objs/byte/fun_ty.cmi

@@ -253,6 +253,23 @@ module Main : sig val expander: string list -> Ast_mapper.mapper end = struct
          fun_ty_next
          (Typ.constr fun_ty_id [glob_cty_ty; ucty; ret])
     | _ -> invalid_arg "fun_ty_of: not an arrow type"
+
+  let printable_of this e =
+    (* [%printable e] is a shortcut for
+       (Test_lib.printable_fun e (Pprintast.string_of_expression [%expr e])) *)
+    app (evar "Test_lib.printable_fun")
+      [app (evar "Pprintast.string_of_expression")
+        [(exp_lifter !loc this) # lift_Parsetree_expression e]; e]
+
+  let code_of this e =
+    (* [%code e] is a shortcut for (Code.(e), Solution.(e), [%expr e]) *)
+    let open_module name e =
+      Exp.open_ Fresh (lid name) e
+      (* since 4.08, use (Exp.open_ (Opn.mk (Mod.ident (lid name))) e) instead *)
+    in
+    tuple [open_module "Code" e;
+           open_module "Solution" e;
+           (exp_lifter !loc this) # lift_Parsetree_expression e]
   (* ------ </edited for learn-ocaml> ------ *)
 
   let expander _args =
@@ -278,6 +295,10 @@ module Main : sig val expander: string list -> Ast_mapper.mapper end = struct
               ty_of this ty
            | Pexp_extension({txt="funty";loc=l}, e) ->
               fun_ty_of this l e
+           | Pexp_extension({txt="printable";loc=l}, e) ->
+              printable_of this (get_exp l e)
+           | Pexp_extension({txt="code";loc=l}, e) ->
+              code_of this (get_exp l e)
 (* ------ </edited for learn-ocaml> ------ *)
            | _ ->
                super.expr this e

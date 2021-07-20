@@ -38,6 +38,7 @@ embedded_grading_cmis = [
   "%{compiler-libs_FULL_DST_DIR}%/parsetree.cmi"
   "%{compiler-libs_FULL_DST_DIR}%/location.cmi"
   "%{compiler-libs_FULL_DST_DIR}%/parse.cmi"
+  "%{compiler-libs_FULL_DST_DIR}%/pprintast.cmi"
   "%{ty_FULL_DST_DIR}%/ty.cmi"
   "%{testing_FULL_DST_DIR}%/introspection_intf.cmi"
   "%{learnocaml-report_FULL_DST_DIR}%/learnocaml_report.cmi"
