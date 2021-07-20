@@ -34,11 +34,16 @@ let () =
          in
          init_tabs ();
          exercise_fetch >>= fun (ex_meta, exo, _deadline) ->
-         (* display exercise questions *)
+         (* display exercise questions and prelude *)
+         setup_tab_text_prelude_pane Learnocaml_exercise.(decipher File.prelude exo);
+         let prelude_container = find_component "learnocaml-exo-tab-text-prelude" in
+         let iframe_container = find_component "learnocaml-exo-tab-text-iframe" in
          let text_iframe = Dom_html.createIframe Dom_html.document in
+         Manip.replaceChildren iframe_container [Tyxml_js.Of_dom.of_iFrame text_iframe];
          Manip.replaceChildren text_container
-           Tyxml_js.Html5.[ h1 [ txt ex_meta.title ] ;
-                            Tyxml_js.Of_dom.of_iFrame text_iframe ] ;
+           Tyxml_js.Html5.[ h1 [ txt ex_meta.title] ;
+                            prelude_container;
+                            iframe_container ] ;
          Js.Opt.case
            (text_iframe##.contentDocument)
            (fun () -> failwith "cannot edit iframe document")

@@ -43,6 +43,7 @@ body {
   display: block;
   font-weight: normal;
   position: relative;
+  border-bottom: thin solid #eee;
 }
 #learnocaml-exo-tabs > * > h1:first-child {
   margin-top: 5px;
@@ -52,13 +53,96 @@ body {
   overflow: auto;
   flex: 1 3 auto ;
 }
-#learnocaml-exo-tab-meta > h1::after {
+#learnocaml-exo-tab-meta > * > h1::after {
   position: absolute;
   left: 0px; bottom: -5px; width: 100%;
   content:"";
   height:5px; background: pink;
   background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0, transparent 100%)
 }
+
+/* ----------------------- iframe --------------------------------*/
+
+#learnocaml-exo-tab-text-iframe {
+    position : absolute;
+    right : 0px;
+    left : 0px;
+    bottom : 0px;
+    display : flex ;
+    flex-direction : column;
+}
+
+#learnocaml-exo-tab-text-iframe > iframe {
+    height : 100%;
+}
+/* -------------------- Prelude -------------------------------- */
+
+#learnocaml-exo-tab-text-prelude {
+  overflow: hidden;
+  left: 0;
+  top: 61px;
+  z-index: 1002;
+  border-bottom: thin solid #eee;
+  width: 100%;
+}
+#learnocaml-exo-tab-text-prelude > h1 {
+  position: relative;
+  flex: 0 0 auto;
+  background: #222;
+  color: #eee;
+  font-size: 20px;
+  line-height: 22px;
+  margin: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: block;
+  font-weight: normal;
+  z-index: 1005;
+  width: 100%;
+  text-align: center;
+}
+#learnocaml-exo-tab-text-prelude > h1:first-child {
+  margin-top: 0;
+}
+#learnocaml-exo-tab-text-prelude > h1 > button {
+  float: right;
+  border: none;
+  border-left: 1px #eee solid;
+  color: #eee;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: -10px;
+  margin-bottom: -10px;
+  font-size: 20px;
+  line-height: 22px;
+  z-index: 1006;
+  width: 20%;
+  background: #222; 
+}
+#learnocaml-exo-tab-text-prelude > iframe {
+  border: none;
+  overflow: auto;
+  flex: 1 3 auto ;
+}
+#learnocaml-exo-tab-text-prelude > pre.toplevel-code {
+  flex: 0 1 auto;
+  height: 150px;
+  max-height: 150px;
+  background: #666;
+  margin: 0;
+  overflow: auto;
+  width: 100%;
+  position: absolute;
+}
+#learnocaml-exo-tab-text-prelude > h1::after {
+  position: absolute;
+  left: 0px; bottom: -5px; width: 100%;
+  content:"";
+  height:5px; background: pink;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0, transparent 100%)
+}
+
+
 
 /* BEGIN excerpt from learnocaml_exercise.css */
 

@@ -941,6 +941,42 @@ let set_nickname_div () =
   | nickname -> Manip.setInnerText nickname_div nickname
   | exception Not_found -> ()
 
+(* setup for the prelude in the description page (in description_main.ml) *)
+let setup_tab_text_prelude_pane prelude =
+  if prelude = "" then () else
+  let iframe_pane = find_component "learnocaml-exo-tab-text-iframe" in
+  let prelude_pane = find_component "learnocaml-exo-tab-text-prelude" in
+  let open Tyxml_js.Html5 in
+  let state =
+    ref (match arg "tab_text_prelude" with
+         | exception Not_found -> false
+         | "shown" -> true
+         | "hidden" -> false
+         | _ -> failwith "Bad format for argument prelude.") in
+  let prelude_btn = button [] in
+  let prelude_title = h1 [ txt [%i"OCaml prelude"] ;
+                           prelude_btn ] in
+  let prelude_container =
+    pre ~a: [ a_class [ "toplevel-code" ] ]
+      (Learnocaml_toplevel_output.format_ocaml_code prelude) in
+  let update () =
+    if !state then begin
+        Manip.replaceChildren prelude_btn [ txt ("↳ "^[%i"Hide"]) ] ;
+        Manip.SetCss.display prelude_container "" ;
+        Manip.SetCss.top iframe_pane "241px";
+        set_arg "tab_text_prelude" "shown"
+      end else begin
+        Manip.replaceChildren prelude_btn [ txt ("↰ "^[%i"Show"]) ] ;
+        Manip.SetCss.display prelude_container "none" ;
+        Manip.SetCss.top iframe_pane "90px";
+        set_arg "tab_text_prelude" "hidden"
+      end in
+  update () ;
+  Manip.Ev.onclick prelude_btn
+    (fun _ -> state := not !state ; update () ; true) ;
+  Manip.appendChildren prelude_pane
+    [ prelude_title ; prelude_container ]
+
 let setup_prelude_pane ace prelude =
   if prelude = "" then () else
   let editor_pane = find_component "learnocaml-exo-editor-pane" in
