@@ -1,0 +1,61 @@
+name: Generate static binaries
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - '**'
+jobs:
+  static-bin-linux:
+    name: Builds static Linux binaries
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Generate the binaries
+        run: |
+          ./scripts/static-build.sh
+          ldd learn-ocaml learn-ocaml-server learn-ocaml-client
+      - name: Archive static binaries
+        uses: actions/upload-artifact@v2
+        with:
+          name: static-binaries-linux
+          path: |
+            learn-ocaml
+            learn-ocaml-server
+            learn-ocaml-client
+  static-bin-macos:
+    name: Builds static Macos binaries
+    runs-on: macos-latest
+    env:
+      OPAMYES: 1
+      OPAMDEPEXTYES: 1
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      # Need unreleased 2.1.0~rc
+      # - name: Retrieve opam
+      #   run: |
+      #     mkdir "$HOME/bin"
+      #     wget https://github.com/ocaml/opam/releases/download/2.1.0-beta2/opam-2.1.0-beta2-x86_64-macos -O $HOME/bin/opam
+      #     chmod a+x $HOME/bin/opam
+      #     echo "$HOME/bin" >> $GITHUB_PATH
+      - name: Install latest opam
+        run: |
+          brew install opam --HEAD
+      - name: Prepare build environment
+        run: |
+          opam init -a --bare
+          opam switch create . ocaml-base-compiler 'dune<2' --deps-only
+      - name: Build the binaries
+        run: |
+          opam exec -- make LINKING_MODE=static
+          otool -L _build/install/default/bin/*
+      - name: Archive static binaries
+        uses: actions/upload-artifact@v2
+        with:
+          name: static-binaries-macos
+          path: _build/install/default/bin/*

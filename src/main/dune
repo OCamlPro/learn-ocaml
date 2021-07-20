@@ -11,7 +11,8 @@
  (name learnocaml_main)
  (modes byte)
  (ocamlc_flags :standard -custom)
- (flags :standard -linkall)
+ (flags (:standard -linkall
+         (:include linking_main.sexp)))
  (modules Learnocaml_main)
  (libraries cmdliner
             sha
@@ -29,7 +30,8 @@
  (name learnocaml_client)
  (modes byte)
  (ocamlc_flags :standard -custom)
- (flags :standard -linkall)
+ (flags (:standard -linkall
+         (:include linking_client.sexp)))
  (modules Learnocaml_client)
  (libraries cmdliner
  	    sha
@@ -48,4 +50,19 @@
  (name learnocaml_server_main)
  (modules learnocaml_server_main)
  (libraries learnocaml_server_args)
+ (flags       (:standard
+               (:include linking_server.sexp)))
 )
+
+(rule
+  (targets linking_main.sexp)
+  (action  (with-stdout-to %{targets}
+    (run ./linking_flags.sh %{env:LINKING_MODE=dynamic} laolao_stubs threads camlrun))))
+(rule
+  (targets linking_client.sexp)
+  (action  (with-stdout-to %{targets}
+    (run ./linking_flags.sh %{env:LINKING_MODE=dynamic} threads camlrun))))
+(rule
+  (targets linking_server.sexp)
+  (action  (with-stdout-to %{targets}
+    (run ./linking_flags.sh %{env:LINKING_MODE=dynamic} laolao_stubs threadsnat))))
