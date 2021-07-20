@@ -121,7 +121,7 @@ val get_state_as_save_file : ?include_reports:bool -> unit -> Save.t
 (** Sync the local save state with the server state, and returns the merged save
     file. The save will be created on the server if it doesn't exist.
 
-    This syncs student {b,content}, but never the reports which are only synched
+    This syncs student {b content}, but never the reports which are only synched
     on "Grade" *)
 val sync: Token.t -> Save.t Lwt.t
 

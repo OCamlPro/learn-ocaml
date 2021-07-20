@@ -5,9 +5,11 @@
  * Learn-OCaml is distributed under the terms of the MIT license. See the
  * included LICENSE file for details.  *)
 
-(* This is not transpiled to learnocaml-static.js, but is an interface
+(** This is not transpiled to learnocaml-static.js, but is an interface
    to the values stored in this file.  It is "statically linked" with
    learnocaml-common.ml. *)
+
+module Js = Js_of_ocaml.Js
 
 class type learnocaml_config = object
   method enableTryocaml: bool Js.optdef_prop

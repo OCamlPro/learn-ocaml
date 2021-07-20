@@ -35,3 +35,5 @@ translations/*.pot
 **/.merlin
 
 tests/corpuses/*
+
+docs/odoc.html
